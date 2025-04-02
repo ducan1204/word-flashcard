@@ -10,7 +10,9 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-
-  await app.listen(process.env.PORT, '0.0.0.0');
+  const port = process.env.PORT || 3000; // Render sets PORT; 3000 is just a local fallback
+  console.log(`Starting NestJS on port: ${port}`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
