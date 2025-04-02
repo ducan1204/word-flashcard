@@ -17,8 +17,8 @@ export class GetQuizUsecase {
         const shuffleAnswers = answers.sort(() => Math.random() - 0.5);
 
         return {
-            definition: correctWord.word,
-            options: shuffleAnswers
+            word: correctWord.word,
+            meanings: shuffleAnswers
         };
     }
 
