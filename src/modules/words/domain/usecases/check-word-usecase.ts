@@ -9,21 +9,12 @@ export class CheckWordUsecase {
         private readonly wordDataSource: WordDataSource,
     ) { }
 
-    async call(word: string, meaing: string): Promise<WordModel> {
+    async call(word: string, meaing: string): Promise<boolean> {
         const answerWord = await this.wordDataSource.getByWord(word);
         if (!answerWord) {
             throw new Error('Word not found');
         }
-        if (answerWord.en_definition === meaing) {
-            return answerWord;
-        } else {
-            const trueWord = await this.wordDataSource.getByMeaning(meaing);
-            if (trueWord) {
-                return trueWord;
-            } else {
-                throw new Error('Meaning not found');
-            }
-        }
+        return answerWord.en_definition === meaing;
     }
 
 }
