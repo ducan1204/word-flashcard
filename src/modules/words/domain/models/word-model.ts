@@ -1,4 +1,4 @@
-import { DomainModel } from "src/core/models/domain-models";
+import { DomainModel } from "src/core/models/domain-model";
 
 export class WordModel extends DomainModel {
     public readonly id: number;

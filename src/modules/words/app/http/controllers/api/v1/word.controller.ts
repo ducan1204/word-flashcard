@@ -2,8 +2,8 @@ import { Body, Controller, Get, HttpStatus, Post, Res } from "@nestjs/common";
 import { Response } from "express";
 import { WordCheck } from "src/modules/words/app/dtos/word-dtos";
 import { WordDataSource } from "src/modules/words/data/datasources/word-datasource";
-import { CheckWordUsecase } from "src/modules/words/domain/usecases/check-word-usecase";
-import { GetQuizUsecase } from "src/modules/words/domain/usecases/get-quiz-usecase";
+import { CheckWordUsecase } from "src/modules/words/domain/usecases/words/check-word-usecase";
+import { GetQuizUsecase } from "src/modules/words/domain/usecases/words/get-quiz-usecase";
 
 @Controller()
 export class WordController {

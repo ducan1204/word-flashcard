@@ -5,11 +5,13 @@ import { GCPModule } from '../gcp/gcp.module';
 import { WordModule } from '../words/word.module';
 import { AppController } from './app/http/controllers/api/v1/app.controller';
 import { AppService } from './data/services/app.service';
+import { SettingModule } from '../settings/setting.module';
 
 @Module({
   imports: [
     GCPModule,
     WordModule,
+    SettingModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
