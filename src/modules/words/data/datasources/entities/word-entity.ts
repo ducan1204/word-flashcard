@@ -4,47 +4,47 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 @Entity('words')
 export default class WordEntity {
     @PrimaryColumn()
-    ID: number;
+    id: string;
 
     @Column()
-    Word: string;
+    word: string;
 
     @Column()
-    En_Definition: string;
+    en_definition: string;
 
     @Column()
-    Vi_Definition: string;
+    vi_definition: string;
 
     @Column()
-    Type: string;
+    type: string;
 
     @Column()
-    Pronunciation: string;
+    pronunciation: string;
 
     @Column()
-    Synonym: string;
+    synonym: string;
 
     @Column()
-    Antonym: string;
+    antonym: string;
 
     @Column()
-    Example: string;
+    example: string;
 
     @Column()
-    Note: string;
+    note: string;
 
     toModel(): WordModel {
         return new WordModel(
-            this.ID,
-            this.Word,
-            this.En_Definition,
-            this.Vi_Definition,
-            this.Type,
-            this.Pronunciation,
-            this.Example,
-            this.Synonym,
-            this.Antonym,
-            this.Note,
+            this.id,
+            this.word,
+            this.en_definition,
+            this.vi_definition,
+            this.type,
+            this.pronunciation,
+            this.example,
+            this.synonym,
+            this.antonym,
+            this.note,
         )
     }
 }

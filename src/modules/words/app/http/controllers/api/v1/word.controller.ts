@@ -41,7 +41,7 @@ export class WordController {
     }
 
     @Get('words/:id')
-    async getWordById(@Res() res: Response, id: number) {
+    async getWordById(@Res() res: Response, id: string) {
         const word = await this.wordDataSource.get(id);
         res.status(HttpStatus.OK).json(word);
     }

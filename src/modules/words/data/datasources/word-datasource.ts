@@ -10,10 +10,10 @@ export class WordDataSource {
     private readonly wordRepository: Repository<WordEntity>) {
     }
 
-    async get(id: number): Promise<WordModel | undefined> {
+    async get(id: string): Promise<WordModel | undefined> {
         return (await this.wordRepository.findOne({
             where: {
-                ID: id
+                id: id
             }
         }))?.toModel();
     }
@@ -29,7 +29,7 @@ export class WordDataSource {
     async getByWord(word: string): Promise<WordModel | undefined> {
         return (await this.wordRepository.findOne({
             where: {
-                Word: word
+                word: word
             }
         }))?.toModel();
     }
@@ -37,7 +37,7 @@ export class WordDataSource {
     async getByMeaning(meaning: string): Promise<WordModel | undefined> {
         return (await this.wordRepository.findOne({
             where: {
-                En_Definition: meaning
+                en_definition: meaning
             }
         }))?.toModel();
     }
@@ -52,10 +52,10 @@ export class WordDataSource {
         return query.getOne().then((entity) => entity.toModel());
     }
 
-    async getRandomWords(amount: number, excludeIds: number[] = []): Promise<WordModel[]> {
+    async getRandomWords(amount: number, excludeIds: string[] = []): Promise<WordModel[]> {
         const condition: FindOptionsWhere<WordEntity> = {};
         if (excludeIds.length > 0) {
-            condition.ID = Not(In(excludeIds));
+            condition.id = Not(In(excludeIds));
         }
         const query = this.wordRepository.createQueryBuilder().setFindOptions({
             where: condition,

@@ -1,7 +1,7 @@
 import { DomainModel } from "src/core/models/domain-model";
 
 export class WordModel extends DomainModel {
-    public readonly id: number;
+    public readonly id: string;
     public readonly word: string;
     public readonly en_definition: string;
     public readonly vi_definition: string;
@@ -13,7 +13,7 @@ export class WordModel extends DomainModel {
     public readonly note: string;
 
     constructor(
-        id: number,
+        id: string,
         word: string,
         en_definition: string,
         vi_definition: string,
