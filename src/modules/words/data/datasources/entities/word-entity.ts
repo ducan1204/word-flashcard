@@ -1,10 +1,13 @@
 import { WordModel } from "src/modules/words/domain/models/word-model";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('words')
 export default class WordEntity {
     @PrimaryColumn()
     id: string;
+
+    @PrimaryGeneratedColumn()
+    old_id: number;
 
     @Column()
     word: string;

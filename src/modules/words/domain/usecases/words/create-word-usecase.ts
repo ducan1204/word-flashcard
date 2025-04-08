@@ -1,34 +1,45 @@
-import { Injectable } from "@nestjs/common";
-import { SettingKey } from "src/modules/settings/domain/enums/setting-key";
-import { GetSettingUsecase } from "src/modules/settings/domain/usecases/settings/get-setting-usecase";
-import { WordDataSource } from "../../../data/datasources/word-datasource";
-import { QuizMode } from "../../enums/quiz-mode";
+import { Injectable } from '@nestjs/common';
+import { uuidv4 } from 'src/core/helpers/utils';
+import { WordDataSource } from '../../../data/datasources/word-datasource';
+import { WordModel } from '../../models/word-model';
+import { GetWordByWordUsecase } from './get-word-by-word-usecase';
 
 @Injectable()
 export class CreateWordUsecase {
+  constructor(
+    private readonly wordDataSource: WordDataSource,
+    private readonly getWordByWordUsecase: GetWordByWordUsecase
+  ) {}
 
-    constructor(
-        private readonly wordDataSource: WordDataSource,
-        private readonly getSettingUsecase: GetSettingUsecase,
-    ) { }
-
-    async call(word: string, meaing: string): Promise<boolean> {
-        const setting = await this.getSettingUsecase.call(SettingKey.WORD_QUIZMODE);
-        if (!setting) {
-            throw new Error('Setting not found');
-        }
-
-        const answerWord = await this.wordDataSource.getByWord(word);
-        if (!answerWord) {
-            throw new Error('Word not found');
-        }
-        if (setting.value === QuizMode.EN_EN) {
-            return answerWord.en_definition === meaing;
-        } else if (setting.value === QuizMode.EN_VI)
-            return answerWord.vi_definition === meaing;
-        else {
-            throw new Error('Invalid quiz mode');
-        }
+  async call(
+    word: string,
+    en_definition: string,
+    vi_definition: string,
+    type?: string,
+    pronunciation?: string,
+    synonym?: string,
+    antonym?: string,
+    example?: string,
+    note?: string
+  ): Promise<WordModel> {
+    const existingWord = await this.getWordByWordUsecase.call(word);
+    console.log(existingWord);
+    if (existingWord) {
+      throw new Error('Word already exists');
     }
-
+    const newWord = new WordModel(
+      uuidv4(),
+      word,
+      en_definition,
+      vi_definition,
+      type,
+      pronunciation,
+      synonym,
+      antonym,
+      example,
+      note
+    );
+    await this.wordDataSource.create(newWord);
+    return newWord;
+  }
 }
