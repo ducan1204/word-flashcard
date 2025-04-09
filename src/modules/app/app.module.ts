@@ -1,17 +1,19 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GCPModule } from '../gcp/gcp.module';
+import { GoogleModule } from '../google/google.module';
+import { SettingModule } from '../settings/setting.module';
 import { WordModule } from '../words/word.module';
 import { AppController } from './app/http/controllers/api/v1/app.controller';
 import { AppService } from './data/services/app.service';
-import { SettingModule } from '../settings/setting.module';
 
 @Module({
   imports: [
     GCPModule,
     WordModule,
     SettingModule,
+    GoogleModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -36,4 +38,4 @@ import { SettingModule } from '../settings/setting.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

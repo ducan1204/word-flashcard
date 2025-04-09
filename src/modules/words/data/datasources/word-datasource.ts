@@ -86,4 +86,26 @@ export class WordDataSource {
     wordEntity.note = model.note;
     await this.wordRepository.save(wordEntity);
   }
+
+  async upsert(words: WordModel[]): Promise<void> {
+    await this.wordRepository
+      .createQueryBuilder()
+      .insert()
+      .into(WordEntity)
+      .values(words)
+      .orUpdate(
+        [
+          'en_definition',
+          'vi_definition',
+          'type',
+          'pronunciation',
+          'synonym',
+          'antonym',
+          'example',
+          'note',
+        ],
+        ['word']
+      )
+      .execute();
+  }
 }

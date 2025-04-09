@@ -62,4 +62,4 @@ def is_lowercase(string):
     return string == string.lower()
 
 # Example usage
-rename_module_files("./src/modules/settings", old_prefix="word", new_prefix="setting")
+rename_module_files("./src/modules/google", old_prefix="word", new_prefix="google")

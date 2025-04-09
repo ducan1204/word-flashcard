@@ -6,24 +6,26 @@ import { CreateWordUsecase } from 'src/modules/words/domain/usecases/words/creat
 import { GetQuizUsecase } from 'src/modules/words/domain/usecases/words/get-quiz-usecase';
 import { GetWordUsecase } from 'src/modules/words/domain/usecases/words/get-word-usecase';
 import { GetWordsUsecase } from 'src/modules/words/domain/usecases/words/get-words-usecase';
+import { SyncWordDataUseCase } from 'src/modules/words/domain/usecases/words/sync-words-data-usecase';
 
-@Controller()
+@Controller('words')
 export class WordController {
   constructor(
     private readonly checkWordUsecase: CheckWordUsecase,
     private readonly getQuizUsecase: GetQuizUsecase,
     private readonly createWordUsecase: CreateWordUsecase,
     private readonly getWordUsecase: GetWordUsecase,
-    private readonly getWordsUsecase: GetWordsUsecase
+    private readonly getWordsUsecase: GetWordsUsecase,
+    private readonly syncWordDataUseCase: SyncWordDataUseCase
   ) {}
 
-  @Get('words')
+  @Get('')
   async getWords(@Res() res: Response) {
     const words = await this.getWordsUsecase.call();
     res.status(HttpStatus.OK).json(words);
   }
 
-  @Get('words/random')
+  @Get('random')
   async getRandomWord(@Res() res: Response) {
     const words = await this.getWordsUsecase.call();
     const randomIndex = Math.floor(Math.random() * words.length);
@@ -31,25 +33,25 @@ export class WordController {
     res.status(HttpStatus.OK).json(question);
   }
 
-  @Get('words/quiz')
+  @Get('quiz')
   async getQuiz(@Res() res: Response) {
     const quiz = await this.getQuizUsecase.call();
     res.status(HttpStatus.OK).json(quiz);
   }
 
-  @Post('words/check')
+  @Post('check')
   async checkWord(@Body() answer: WordCheck, @Res() res: Response) {
     const checkAnswer = await this.checkWordUsecase.call(answer.word, answer.meaning);
     res.status(HttpStatus.OK).json(checkAnswer);
   }
 
-  @Get('words/:id')
+  @Get(':id')
   async getWordById(@Res() res: Response, id: string) {
     const word = await this.getWordUsecase.call(id);
     res.status(HttpStatus.OK).json(word);
   }
 
-  @Post('words')
+  @Post()
   async createWord(@Body() body: WordCreateDto, @Res() res: Response) {
     const newWord = await this.createWordUsecase.call(
       body.word,
@@ -63,5 +65,11 @@ export class WordController {
       body.note
     );
     res.status(HttpStatus.CREATED).json(newWord);
+  }
+
+  @Post('sync')
+  async syncSheets(@Res() res: Response) {
+    await this.syncWordDataUseCase.call();
+    res.status(HttpStatus.OK).json(true);
   }
 }
