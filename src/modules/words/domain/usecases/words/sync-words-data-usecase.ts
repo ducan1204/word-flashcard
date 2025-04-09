@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { uuidv4 } from 'src/core/helpers/utils';
+import { throwError, uuidv4 } from 'src/core/helpers/utils';
 import { GetSheetDataUseCase } from 'src/modules/google/domain/usecases/sheets/get-sheet-data-usecase';
 import { UpsertWordsUsecase } from './upsert-words-usecase';
 
@@ -16,12 +16,19 @@ export class SyncWordDataUseCase {
     const data = await this.getSheetDataUseCase.call(this.SheetID, this.SheetRange);
 
     const [headers, ...rows] = data;
+    const words = new Set<string>();
     const mappedWords = rows.map((row) => {
       const word = {};
       headers.forEach((key, i) => {
         word[key.toLowerCase()] = row[i];
       });
       word['id'] = uuidv4();
+      const wordValue = word['word'];
+      if (words.has(wordValue)) {
+        console.log('duplicate', wordValue); // Log duplicate values
+        throwError(`Duplicate word found: ${wordValue}`);
+      }
+      words.add(wordValue);
       return word;
     });
 
